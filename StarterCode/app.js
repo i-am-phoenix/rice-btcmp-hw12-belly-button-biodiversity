@@ -46,7 +46,7 @@ let otu_lbl = samples_data.map(function(row) {
 
 // Function to filter out data with specific sample id
 
-let sID = 941
+let sID = 940
 
 // Initialize
 var plot_samp_val;
@@ -91,7 +91,9 @@ let data_hbar = [trace_hbar];
 
  // Apply a title to the layout
  let layout = {
-    title: `Top 10 OTUs found in the individual with Subject ID #${sID}`//,
+    title: `Top 10 OTUs found in the individual with Subject ID #${sID}`,
+    width: 300,
+    height: 500//,
     // margin: {
     //   l: 100,
     //   r: 100,

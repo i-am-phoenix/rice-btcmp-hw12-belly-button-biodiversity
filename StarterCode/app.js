@@ -92,9 +92,18 @@ function updatePlotly() {
     Plotly.relayout("bar", layout_update);
     };
   }
-}
 
-function init() {
+  for (i=0; i<meta_data.length; i++) {
+    individualSample = meta_data[i];
+    if (individualSample.id == specimen) {
+      document.getElementById("sample-metadata").innerHTML = "";
+      addInfo(individualSample);
+    };
+  };
+};
+
+function init_bar_meta() {
+// ----------------- HORIZONTAL BAR CHART
   for (i=0; i<topTenData.length; i++) {
       individualSample = topTenData[i];
       console.log(JSON.stringify(individualSample, null, 2))
@@ -130,11 +139,59 @@ function init() {
     
       Plotly.newPlot('bar', data_hbar, layout)
 
+// ----------------- METADATA REPORTING
       console.log("debug1==========", meta_data[0])
       addInfo(meta_data[0]);
-      
+
       break; 
   };
 };
 
-init();
+function init_bubble() {
+// ----------------- BUBBLE PLOT  
+     for (i=0; i<topTenData.length; i++) {
+      individualSample = topTenData[i];
+      let trace_bubble = {
+        x: individualSample.otu_ids,
+        y: individualSample.sample_values,
+        text: individualSample.otu_labels.map(d => `Label ${d}   `),
+        mode: 'markers',
+        marker: {
+          color: individualSample.otu_ids,
+          colorscale: 'spectral',
+          type: 'heatmap',
+          opacity: 0.6,
+          size: individualSample.sample_values,
+          
+          colorbar: {
+            thickness: 10,
+            y: 0.5,
+            ypad: 0,
+            title: 'Tree Density',
+            titleside: 'bottom',
+            outlinewidth: 1,
+            outlinecolor: 'black',
+            tickfont: {
+              family: 'Lato',
+              size: 14,
+              color: 'green'
+            }
+          }
+        }
+      };
+
+      var data_bubble = [trace_bubble];
+
+      var layout_bubble = {
+        title: 'Overall sample stats',
+        showlegend: false,
+        height: 600
+        // width: %
+      };
+
+      Plotly.newPlot('bubble', data_bubble, layout_bubble); 
+  };
+};
+
+init_bar_meta();
+init_bubble();

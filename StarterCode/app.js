@@ -34,19 +34,19 @@ for (i=0; i<samples_data.length; i++) {
 for (i=0; i<topTenData.length; i++) {
     individualSample = topTenData[i];
     console.log(JSON.stringify(individualSample, null, 2))
-    console.log(individualSample.id);
-    console.log(individualSample.otu_ids);
-    console.log(individualSample.otu_labels);
-    console.log(individualSample.sample_values);
+    console.log("subject_id:", individualSample.id);
+    console.log("sample_ids:", individualSample.otu_ids);
+    console.log("labels:", individualSample.otu_labels);
+    console.log("sample_valus:", individualSample.sample_values);
 
     // let sortedSubjectData = individualSample.sort((a, b) => b.sample_values - a.sample_values);
     
-    console.log(`Subject ID #${topTenData.id}`);
+    console.log(`Subject ID #${individualSample.id}`);
 
     let trace_hbar = {
-        x: individualSample.sample_values,
-        y: individualSample.otu_ids,
-        text: individualSample.otu_labels,
+        x: individualSample.sample_values.reverse(),
+        y: `OTU ${individualSample.otu_ids.reverse()}`,
+        text: individualSample.otu_labels.reverse(),
         type: 'bar',
         name: `Subject ID #${topTenData.id}`,
         orientation: 'h'
@@ -56,7 +56,7 @@ for (i=0; i<topTenData.length; i++) {
   
    // Apply a title to the layout
    let layout = {
-      title: `Top 10 OTUs<br>found in Subject ID #${topTenData.id}`,
+      title: `Top 10 OTUs<br>found in Subject ID #${individualSample.id}`,
       width: 500,
       height: 500
     };

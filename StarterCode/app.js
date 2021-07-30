@@ -20,9 +20,9 @@ console.log("Metakeys", meta_keys)
 
 // sort and filter top ten OTU for each sample
 let topTenData = samples_data.map(d => {
-    d.sample_values = d.sample_values.sort((a,b)=>b-a).slice(0,10)
-    d.otu_ids = d.otu_ids.sort((a,b) => b-a).slice(0,10),
-    d.otu_labels = d.otu_labels.sort((a,b) => b-a).slice(0,10)
+    d.sample_values = d.sample_values.sort((a,b)=>b-a).slice(0,10).reverse();
+    d.otu_ids = d.otu_ids.sort((a,b) => b-a).slice(0,10).reverse();
+    d.otu_labels = d.otu_labels.sort((a,b) => b-a).slice(0,10).reverse();
     return d
  });//sortedSubjectData.slice(0,10);
 
@@ -35,20 +35,24 @@ function addSelection(id) {
     selection.appendChild(option);
   } ;
 
-// // Function to add sample ID info within panel-body class
-// // function addInfo(d) {
-// //   var panel = document.getElementById("sample-metadata");
-// //   var p = document.createElement("p");
-// //   var mk = Object.keys(d)
-// //     console.log("mk:",mk)
-// //     for (k=0;mk.length;k++) {  
-// //         console.log(mk[k])
-// //       p.appendChild(document.createTextNode(`${mk[k]}: 1`));//${d[k]}
-// //       // span.appendChild(document.createTextNode(data.id));
-// //       // span.appendChild(document.createTextNode(data.id));
-// //       panel.appendChild(p);
-// //     };
-// // } ;  
+// Function to add sample ID info within panel-body class
+function addInfo(d) {
+  // Locate div tag within which metadata will be added
+  var panel = document.getElementById("sample-metadata");
+
+  // Loop through all metadata categories
+  var mk = Object.keys(d)
+    console.log("mk:",mk)
+    console.log(`d=`,d)
+    for (k=0;k<mk.length;k++) {
+        // set up span element
+        var span = document.createElement("p");
+        // add text to the newly added spn tag
+        span.appendChild(document.createTextNode(`${mk[k]}: ${d[mk[k]]}`));
+        // append span to parent tag
+        panel.appendChild(span);
+    };
+} ;  
 
 
 // Read in sample ids and create drop-down selector
@@ -74,8 +78,8 @@ function updatePlotly() {
   for (i=0; i<topTenData.length; i++) {
     individualSample = topTenData[i];
     if (individualSample.id == specimen) {   
-      x = individualSample.sample_values.reverse();
-      y = individualSample.otu_ids.reverse().map(d => `OTU ${d}`);
+      x = individualSample.sample_values;
+      y = individualSample.otu_ids.map(d => `OTU ${d}   `);
     
     // Note the extra brackets around 'x' and 'y'
     Plotly.restyle("bar", "x", [x]);
@@ -104,9 +108,9 @@ function init() {
       console.log(`Subject ID #${individualSample.id}`);
 
       let trace_hbar = {
-          x: individualSample.sample_values.reverse(),
-          y: individualSample.otu_ids.reverse().map(d => `OTU ${d}`),
-          text: individualSample.otu_labels.reverse(),
+          x: individualSample.sample_values,
+          y: individualSample.otu_ids.map(d => `OTU ${d}   `),
+          text: individualSample.otu_labels,
           type: 'bar',
           name: `Subject ID #${individualSample.id}`,
           orientation: 'h',
@@ -126,8 +130,9 @@ function init() {
     
       Plotly.newPlot('bar', data_hbar, layout)
 
-      // addInfo(meta_data[0]);
-
+      console.log("debug1==========", meta_data[0])
+      addInfo(meta_data[0]);
+      
       break; 
   };
 };

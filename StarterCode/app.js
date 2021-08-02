@@ -1,21 +1,19 @@
 // Load data
-let data_json = []
+let data = []
 let file = "samples.json"
-var test_data = [];
 
-d3.json(file).then((data_json)=> {
-  console.log(data_json)
-  data = data_json
-});
+d3.json(file).then((data)=> {
+  console.log(data)
+// });
 
 // Isolate metadata
-let meta_data = data[0].metadata
+let meta_data = data.metadata
 let meta_keys = Object.keys(meta_data[0])
 console.log("1. meta_data[0]..............", meta_data[0])
 
 
 // Isolate sample data only
-let samples_data = data[0].samples;
+let samples_data = data.samples;
 
 //console.log(`Number of test subjects ${samples_data.length}`);
 console.log("2. samples_data[0]..............", samples_data[0])
@@ -352,3 +350,5 @@ createDropDownMenu(samples_data);
 initMeta(meta_data[0]);
 initBar(samples_data);
 initBubble(samples_data);
+
+});

@@ -54,6 +54,9 @@ function initMeta(input) {
         p.appendChild(document.createTextNode(`${mk[k]}: ${input[mk[k]]}`));
         // append span to parent tag
         panel.appendChild(p);
+        if (mk[k] == "wfreq") {
+          addGauge(input[mk[k]])  
+        }
     };
 } ;  
 
@@ -86,9 +89,9 @@ function initBar(input) {
       
       // Apply a title to the layout
       let layout = {
-          title: `Top 10 OTUs<br>found in Subject ID #${individualSample.id}`,
-          width: "100%",
-          height: "100%"
+          title: `Top 10 OTUs<br>found in Subject ID #${individualSample.id}`
+          // width: "100%",
+          // height: "100%"
         };
       
         Plotly.newPlot('bar', data_hbar, layout, {responsive: true})
@@ -187,8 +190,71 @@ function addInfo(input) {
         p.appendChild(document.createTextNode(`${mk[k]}: ${input[mk[k]]}`));
         // append span to parent tag
         panel.appendChild(p);
+        if (mk[k] == "wfreq") {
+          addGauge(input[mk[k]])  
+        }
     };
 } ;  
+
+function addGauge(input) {
+
+  var data = [
+    {
+      type: "indicator",
+      // visible: true,
+      mode: "gauge+number",
+      // value: 420,
+      title: { 
+        text: `<b>Belly Button Washing Frequency</b><br>Scrubs per Week`, 
+        font: { 
+          size: 24 
+        } 
+      },
+      gauge: {
+        axis: { 
+          range: [0, 9], 
+          tickwidth: 0, 
+          tickcolor: "black", 
+          // showticklabels: false,
+          tickangle: 0
+        },
+        bar: { color: "black" },
+        bgcolor: "white",
+        borderwidth: 2,
+        bordercolor: "gray",
+        steps: [
+          { range: [0, 1], color: "#f8f3ec", name: "0-1"},
+          { range: [1, 2], color: "#f4f1e4" },
+          { range: [2, 3], color: "#e9e7c9" },
+          { range: [3, 4], color: "#e5e8b0" },
+          { range: [4, 5], color: "#d5e599" },
+          { range: [5, 6], color: "#b7cd8f" },
+          { range: [6, 7], color: "#8bc086" },
+          { range: [7, 8], color: "#89bc8d" },
+          { range: [8, 9], color: "#84b589" }
+        ],
+        threshold: {
+          line: { color: "red", width: 8 },
+          thickness: 0.75,
+          value: input
+        }
+      }
+    }
+  ];
+  
+  var layout = {
+    // width: 500,
+    // height: 400,
+    // margin: { t: 25, r: 25, l: 25, b: 25 },
+    // paper_bgcolor: "lavender",
+    font: { color: "black", family: "Arial" }
+  };
+  
+  Plotly.newPlot("gauge", data, layout);
+
+};
+
+
 
 // ---------------------------------------- UPDATING ----------------------------------------
 
@@ -347,6 +413,7 @@ function updateBubble(input, subject) {
 
 
 createDropDownMenu(samples_data);
+addGauge(meta_data[0]);
 initMeta(meta_data[0]);
 initBar(samples_data);
 initBubble(samples_data);

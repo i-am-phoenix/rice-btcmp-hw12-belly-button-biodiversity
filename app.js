@@ -1,6 +1,6 @@
 // Load data
 let data = []
-let file = "samples.json"
+let file = "./data/samples.json"
 
 d3.json(file).then((data)=> {
   console.log(data)
@@ -98,7 +98,6 @@ function initBar(input) {
         break; 
     };
   };
-
 
 var individualSampleBubble={};
 var data_bubble = [];
@@ -254,8 +253,6 @@ function addGauge(input) {
 
 };
 
-
-
 // ---------------------------------------- UPDATING ----------------------------------------
 
 function updatePlotly() {
@@ -323,7 +320,6 @@ function updateBar(input, subject) {
     };
   };
 };
-
 
 function updateMeta(input, subject) {
   for (i=0; i<input.length; i++) {

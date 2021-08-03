@@ -249,7 +249,7 @@ function addGauge(input) {
     font: { color: "black", family: "Arial" }
   };
   
-  Plotly.newPlot("gauge", data, layout);
+  Plotly.newPlot("gauge", data, layout, {responsive: true});
 
 };
 
